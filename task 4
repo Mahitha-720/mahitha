@@ -1,0 +1,137 @@
+`App.js`
+
+
+import React, { useState } from 'react';
+import './App.css';
+
+function App() {
+    const [tasks, setTasks] = useState([]);
+    const [task, setTask] = useState('');
+
+    const addTask = () => {
+        if (task.trim()) {
+            setTasks([...tasks, { text: task, completed: false }]);
+            setTask('');
+        }
+    };
+
+    const toggleComplete = index => {
+        const newTasks = tasks.map((task, i) => {
+            if (i === index) {
+                return { ...task, completed: !task.completed };
+            }
+            return task;
+        });
+        setTasks(newTasks);
+    };
+
+    const deleteTask = index => {
+        setTasks(tasks.filter((_, i) => i !== index));
+    };
+
+    return (
+        <div className="app">
+            <h1>To-Do List</h1>
+            <div className="input-container">
+                <input
+                    type="text"
+                    value={task}
+                    onChange={e => setTask(e.target.value)}
+                    placeholder="Add a new task"
+                />
+                <button onClick={addTask}>Add Task</button>
+            </div>
+            <ul className="task-list">
+                {tasks.map((task, index) => (
+                    <li key={index} className={task.completed ? 'completed' : ''}>
+                        <span onClick={() => toggleComplete(index)}>{task.text}</span>
+                        <button onClick={() => deleteTask(index)}>Delete</button>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    );
+}
+
+export default App;
+
+
+
+
+`App.css`
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+}
+
+.app {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.input-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+input[type="text"] {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    margin-right: 10px;
+}
+
+button {
+    padding: 10px 20px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+.task-list {
+    list-style: none;
+    padding: 0;
+}
+
+.task-list li {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid #ccc;
+}
+
+.task-list li.completed span {
+    text-decoration: line-through;
+    color: #888;
+}
+
+.task-list button {
+    border: none;
+    background-color: #dc3545;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+.task-list button:hover {
+    background-color: #c82333;
+}
+
